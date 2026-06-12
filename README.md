@@ -7,44 +7,61 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
+# Student Management System
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+A robust web application designed to streamline educational administration. This system provides a centralized platform for managing student and teacher details, tracking academic results, and ensuring secure access for authorized users.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 🚀 Features
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+* **Secure Authentication:** Robust login functionality to protect sensitive educational data.
+* **Student & Teacher Management:** Comprehensive tools to add, view, and manage profiles for both students and faculty members.
+* **Academic Results Tracking:** Streamlined systems for recording, managing, and viewing student grades and academic performance.
 
-## Learning Laravel
+## 🛠️ Tech Stack
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+* **Framework:** Laravel (PHP)
+* **Frontend:** Blade Templating, Vite
+* **Database:** MySQL / SQLite (configured via `.env`)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## ⚙️ Installation & Setup
 
-## Laravel Sponsors
+Follow these steps to get the project up and running on your local machine.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Prerequisites
+* PHP >= 8.1
+* Composer
+* Node.js & NPM
 
-### Premium Partners
+### Steps
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+1. **Clone the repository:**
+   ```bash
+   git clone [https://github.com/4prathamesh/studentmanagement.git](https://github.com/4prathamesh/studentmanagement.git)
+   cd studentmanagement
+2. **Install PHP dependencies:**
+    ```bash
+    composer install
+   
+4. **Install and compile frontend dependencies:**
+    ```bash
+    npm install
+    npm run build
+   
+6. **Environment Setup:**
+   ```bash
+    cp .env.example .env
+   
+8. **Generate Application Key:**
+   ```bash
+    php artisan key:generate
+   
+10. **Run Database Migrations:**
+    ```bash
+    php artisan migrate
+    
+12. **Start the local development server:**
+    ```bash
+    php artisan serve
 
 ## Code of Conduct
 
