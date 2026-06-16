@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- Required scripts for Bootstrap Dropdowns and Collapse to work -->
+    <script src="https://jquery.com"></script>
+    <script src="https://jsdelivr.net"></script>
+    <script src="https://jsdelivr.net"></script>
+    
     <title>Student Management</title>
     <style>
         .sidebar {
@@ -36,7 +41,7 @@
             color: white;
         }
 
-        /* Page content. The value of the margin-left property should match the value of the sidebar's width property */
+        /* Page content */
         div.content {
             margin-left: 200px;
             padding: 1px 16px;
@@ -54,7 +59,7 @@
             div.content {margin-left: 0;}
         }
 
-        /* On screens that are less than 400px, display the bar vertically, instead of horizontally */
+        /* On screens that are less than 400px, display the bar vertically */
         @media screen and (max-width: 400px) {
             .sidebar a {
                 text-align: center;
@@ -64,18 +69,54 @@
     </style>
 </head>
 <body>
-    <div class="container"> 
+    <div class="container-fluid px-4"> <!-- Changed to container-fluid for better layout width -->
         <div class="row">
             <div class="col-md-12">
-                <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                    <a class="navbar-brand" href="#"><h1>Student Management</h1></a>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between">
+                    <a class="navbar-brand" href="{{ url('/') }}"><h1>Student Management</h1></a>
+                    
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAuth" aria-controls="navbarNavAuth" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
+
+                    <div class="collapse navbar-collapse justify-content-end" id="navbarNavAuth">
+                        <ul class="navbar-nav">
+                            @if (Route::has('login'))
+                                @auth
+                                    <!-- User is logged in: Show Name and Log Out Button -->
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle font-weight-bold" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            {{ Auth::user()->name }}
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                            <a class="dropdown-menu-item px-3 py-1 text-secondary" href="{{ route('profile.edit') }}">Profile</a>
+                                            <div class="dropdown-divider"></div>
+                                            <!-- Log Out Form required by Breeze -->
+                                            <form method="POST" action="{{ route('logout') }}">
+                                                @csrf
+                                                <button type="submit" class="dropdown-item text-danger">Log Out</button>
+                                            </form>
+                                        </div>
+                                    </li>
+                                @else
+                                    <!-- User is a guest: Show Login and Register buttons -->
+                                    <li class="nav-item">
+                                        <a class="btn btn-outline-primary mr-2" href="{{ route('login') }}">Log in</a>
+                                    </li>
+                                    @if (Route::has('register'))
+                                        <li class="nav-item">
+                                            <a class="btn btn-primary" href="{{ route('register') }}">Register</a>
+                                        </li>
+                                    @endif
+                                @endauth
+                            @endif
+                        </ul>
+                    </div>
                 </nav>
             </div>
         </div>
-        <div class="row">
+        
+        <div class="row mt-3">
             <div class="col-md-3">
                 <div class="sidebar">
                     <a class="active" href="{{ url('/') }}">Home</a>
@@ -89,7 +130,7 @@
                 </div>
             </div>
             <div class="col-md-9">
-                    @yield('content')
+                @yield('content')
             </div>
         </div>
     </div>
