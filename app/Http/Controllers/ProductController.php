@@ -10,14 +10,26 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::latest()->get();
+        // $products = Product::latest()->where('status',true)->get();
+        $perPage = $request->query('per_page', 10);
+        $products = Product::query()
+            ->when($request->search, function($query, $search){
+                $query->where(function($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
+                });
+            })
+            ->where('status', true)
+            ->paginate($perPage);
+
 
         return response()->json([
             'success' => true,
+            'count' => $products->count(),
             'data' => $products
-        ]);
+        ],200);
     }
 
     /**
@@ -31,7 +43,9 @@ class ProductController extends Controller
             'description' => 'nullable|string',
             'price' => 'required|numeric',
             'stock' => 'required|integer',
+            'status'=> 'nullable|boolean'
         ]);
+        $validate['status'] = $validate['status'] ?? true;
         $products = Product::create($validate);
 
         return response()->json([
