@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
-use Illuminate\View\View; 
 
 class ProductController extends Controller
 {
@@ -13,16 +12,12 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::with('category')->latest()->get();
-        return view('products.index', compact('products'));
-    }
+        $products = Product::latest()->get();
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return response()->json([
+            'success' => true,
+            'data' => $products
+        ]);
     }
 
     /**
@@ -30,7 +25,19 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validate = $request->validate([
+            'category_id' => 'nullable',
+            'name' => 'required',
+            'description' => 'nullable|string',
+            'price' => 'required|numeric',
+            'stock' => 'required|integer',
+        ]);
+        $products = Product::create($validate);
+
+        return response()->json([
+            'success' => true,
+            'data' => $products
+        ]);
     }
 
     /**
@@ -38,15 +45,21 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        //
-    }
+        $products = Product::find($id);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+        if(!$products){
+            return response()->json([
+                'success'=> false,
+                'message'=> 'product not found!',
+                'data'=> []
+            ]);
+        }
+
+        return response()->json([
+            'success'=>true,
+            'message'=> 'product found',
+            'data'=> $products
+        ]);
     }
 
     /**
@@ -54,7 +67,31 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validate = $request->validate([
+            'category_id' => 'nullable|exists:categories,id',
+            'name' => 'required',
+            'description' => 'nullable|string',
+            'price' => 'required|numeric',
+            'stock' => 'required|integer',
+        ]);
+
+        $products = Product::find($id);
+
+        if(!$products){
+            return response()->json([
+                'success'=> false,
+                'message'=> 'Product not found!',
+                'data'=> []
+            ]);
+        }
+
+        $products->update($validate);
+
+        return response()->json([
+            'success'=> true,
+            'message'=> 'Product update success',
+            'data'=> $products
+        ]);
     }
 
     /**
@@ -62,6 +99,10 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Product::destroy($id);
+        return response()->json([
+            'success'=> true,
+            'message'=> 'Product deleted'
+        ],200);
     }
 }
